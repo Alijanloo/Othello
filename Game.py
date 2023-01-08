@@ -77,6 +77,17 @@ def dtff(state, i, j, dir, turn):
             scan_row = scan_row + dir[0]
             scan_col = scan_col + dir[1]
     
+def heuristic(state):
+    #Huristic that will return white stones number minus black stones number
+    white_num = 0
+    black_num = 0
+    for row in state:
+        for cell in row:
+            if cell == 'W':
+                white_num += 1
+            if cell == 'B':
+                black_num += 1
+    return white_num - black_num
 
 def is_terminal(state):
     """

@@ -1,6 +1,6 @@
 import Game
 from constants import *
-from algorithms import minMaxSearch, AlphaBetaPruning
+#from algorithms import minMaxSearch, AlphaBetaPruning
 from time import time
 
 def main():
