@@ -29,3 +29,40 @@ def minMaxSearch(state, depth, maximizingPlayer):
                 minEval = eval
 
         return minEval
+
+  
+def AlphaBetaPruning(state,maximizingplayer,depth,alpha,beta):
+    """
+    Minimax Algorithm with alpha beta pruning
+    """
+    if depth == 0 or Game.is_terminal(state):
+        return Game.heuristic(state)
+
+    if maximizingplayer:
+        maxEval = float('-inf')
+
+        if len(state) == 0:
+            maxEval = AlphaBetaPruning(state, False, depth, alpha, beta)
+
+        for child in Game.successor(state, 1):
+            eval = AlphaBetaPruning(child, False, depth - 1, alpha, beta)
+            #Alpha Beta Pruning
+            maxEval = max(maxEval, eval)
+            alpha = max(alpha, eval)
+            if beta <= alpha:
+                break
+            
+        return maxEval
+
+    else:
+        minEval = float('inf')
+
+        for child in Game.successor(state, -1):
+            eval = AlphaBetaPruning(child, True, depth - 1, alpha, beta)
+            #Alpha Beta Pruning
+            minEval = min(minEval, eval)
+            beta = min(beta, eval)
+            if beta <= alpha:
+                break
+
+        return minEval
