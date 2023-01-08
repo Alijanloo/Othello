@@ -30,7 +30,50 @@ def minMaxSearch(state, depth, maximizingPlayer):
 
         return minEval
 
-  
+  def BeamSearch(state, depth, maximizingPlayer,width):
+    """
+    returns maximum of its children values if it is white turn, or minimum if its black, 
+    and goes to parameterized depth for calculating values
+    """
+    if depth == 0 or Game.is_terminal(state):
+        return Game.heuristic(state)
+
+    if maximizingPlayer: # aka white 
+        maxEval = float('-inf')
+        
+        candidates = []
+        for child in Game.successor(state, 1):
+            candidates.append((Game.heuristic(child),child))
+      
+        candidates.sort(key=lambda tup: tup[0],reverse=True)
+        for tu in candidates[:width]:
+            child = tu[1]
+            eval = minMaxSearch(child, depth - 1, False)
+            
+            if eval > maxEval:
+                maxEval = eval
+
+        return maxEval
+
+    else: #black 
+        minEval = float('inf')
+        
+        candidates = []
+        for child in Game.successor(state, 1):
+            candidates.append((Game.heuristic(child),child))
+      
+        candidates.sort(key=lambda tup: tup[0])
+        
+        for tu in candidates[:width]:
+            child = tu[1]
+            eval = minMaxSearch(child, depth - 1, True)
+
+            if eval < minEval:
+                minEval = eval
+
+        return minEval
+
+ 
 def AlphaBetaPruning(state,maximizingplayer,depth,alpha,beta):
     """
     Minimax Algorithm with alpha beta pruning
