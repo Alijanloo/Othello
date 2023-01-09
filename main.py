@@ -1,6 +1,6 @@
 import Game
 from constants import *
-from algorithms import minMaxSearch, AlphaBetaPruning
+from algorithms import minMaxSearch, AlphaBetaPruning, BeamSearch
 from time import time
 
 def main():
@@ -38,7 +38,7 @@ def main():
             best_choice = float('-inf')
 
             for child in childs:
-                score = minMaxSearch(child, 3, True)
+                score = AlphaBetaPruning(child, False, 3, float('-inf'), float('inf'))
                 # print(score)
                 if score >= best_choice:
                     best_choice = score
@@ -48,7 +48,7 @@ def main():
             best_choice = float('inf')
 
             for child in childs:
-                score = minMaxSearch(child, 3, False)
+                score = AlphaBetaPruning(child, True, 3, float('-inf'), float('inf'))
                 # print(score)
                 if score <= best_choice:
                     best_choice = score

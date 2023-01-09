@@ -30,7 +30,7 @@ def minMaxSearch(state, depth, maximizingPlayer):
 
         return minEval
 
-  def BeamSearch(state, depth, maximizingPlayer,width):
+def BeamSearch(state, depth, maximizingPlayer,width):
     """
     returns maximum of its children values if it is white turn, or minimum if its black, 
     and goes to parameterized depth for calculating values
@@ -48,7 +48,7 @@ def minMaxSearch(state, depth, maximizingPlayer):
         candidates.sort(key=lambda tup: tup[0],reverse=True)
         for tu in candidates[:width]:
             child = tu[1]
-            eval = minMaxSearch(child, depth - 1, False)
+            eval = BeamSearch(child, depth - 1, False, width)
             
             if eval > maxEval:
                 maxEval = eval
@@ -59,14 +59,14 @@ def minMaxSearch(state, depth, maximizingPlayer):
         minEval = float('inf')
         
         candidates = []
-        for child in Game.successor(state, 1):
+        for child in Game.successor(state, -1):
             candidates.append((Game.heuristic(child),child))
       
         candidates.sort(key=lambda tup: tup[0])
         
         for tu in candidates[:width]:
             child = tu[1]
-            eval = minMaxSearch(child, depth - 1, True)
+            eval = BeamSearch(child, depth - 1, True, width)
 
             if eval < minEval:
                 minEval = eval
@@ -83,9 +83,6 @@ def AlphaBetaPruning(state,maximizingplayer,depth,alpha,beta):
 
     if maximizingplayer:
         maxEval = float('-inf')
-
-        if len(state) == 0:
-            maxEval = AlphaBetaPruning(state, False, depth, alpha, beta)
 
         for child in Game.successor(state, 1):
             eval = AlphaBetaPruning(child, False, depth - 1, alpha, beta)
